@@ -14,16 +14,16 @@ class BasicArchitectureKonsistTest :
             .classes()
             .withNameEndingWith("Controller")
             .forEach { clazz ->
-                "${clazz.name} should reside in ..controller package".config(enabled = false) {
+                "${clazz.name} should reside in ..controller package" {
                     clazz.assertTrue(testName = this.testCase.name.testName) { it.resideInPackage("..controller") }
                 }
             }
 
         "N-tier architecture has correct dependencies" {
             Konsist
-                .scopeFromProject()
+                .scopeFromSourceSet("main")
                 .assertArchitecture {
-                    val presentation = Layer("Presentation", "io.github.yoanngalentin.app.controller.")
+                    val presentation = Layer("Presentation", "io.github.yoanngalentin.app.controller..")
                     val business = Layer("Business", "io.github.yoanngalentin.app.service..")
                     val database = Layer("Database", "io.github.yoanngalentin.app.data..")
 

@@ -1,5 +1,7 @@
-package io.github.yoanngalentin.app
 
+package io.github.yoanngalentin.app.controller
+
+import io.github.yoanngalentin.app.data.TodoListRepository
 import io.github.yoanngalentin.app.model.Todo
 import io.github.yoanngalentin.app.service.TodoListService
 import org.springframework.http.ResponseEntity
@@ -14,6 +16,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("/todo")
 class TodoListController(
     val todoListService: TodoListService,
+    val todoListRepository: TodoListRepository,
 ) {
     @GetMapping
     fun list(): Mono<ResponseEntity<List<Todo>>> =
@@ -26,8 +29,9 @@ class TodoListController(
     fun addTodo(
         @RequestBody todoToAdd: Todo,
     ): Mono<ResponseEntity<Unit>> =
-        todoListService
-            .add(todoToAdd)
+        todoListRepository
+            .save(todoToAdd)
+            .map { }
             .map { ResponseEntity.ok(it) }
             .onErrorReturn(ResponseEntity.internalServerError().build())
 }
