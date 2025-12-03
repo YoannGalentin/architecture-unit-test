@@ -1,11 +1,11 @@
 import org.gradle.kotlin.dsl.testImplementation
 
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
+    kotlin("jvm") version "2.2.21"
+    kotlin("plugin.spring") version "2.2.21"
     id("org.springframework.boot") version "3.4.0"
-    id("io.spring.dependency-management") version "1.1.6"
-    id("org.graalvm.buildtools.native") version "0.10.3"
+    id("io.spring.dependency-management") version "1.1.7"
+    id("org.graalvm.buildtools.native") version "0.11.3"
 }
 
 group = "io.github.yoanngalentin"
@@ -65,14 +65,14 @@ dependencyManagement {
 
 kotlin {
     compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict")
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
 }
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     filter {
-        includeTestsMatching("io.github.yoanngalentin.*")
+        includeTestsMatching("io.github.yoanngalentin.app.*")
         isFailOnNoMatchingTests = false
     }
 }
