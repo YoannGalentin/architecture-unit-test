@@ -11,9 +11,10 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.test.StepVerifier
 import java.time.Duration
 
-val defaultTimeout = Duration.ofSeconds(5)
+val defaultTimeout: Duration = Duration.ofSeconds(5)
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -39,14 +40,18 @@ class TodoListControllerTest(
             }
 
             "list to-do should return a list with one element" {
-                todoListService
-                    .add(
-                        Todo(
-                            id = 1,
-                            title = "Do the laundry",
-                            completed = false,
-                        ),
-                    ).block(defaultTimeout)
+                StepVerifier
+                    .create(
+                        todoListService
+                            .add(
+                                Todo(
+                                    id = 1,
+                                    title = "Do the laundry",
+                                    completed = false,
+                                ),
+                            ),
+                    ).expectNext(Unit)
+                    .verifyComplete()
 
                 webTestClient
                     .get()

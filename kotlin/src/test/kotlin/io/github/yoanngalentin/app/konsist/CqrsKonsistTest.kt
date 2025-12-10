@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.RestController
 
 class CqrsKonsistTest :
     FreeSpec({
-        val controllerClasses =
+        val controllerClassesScope =
             Konsist
                 .scopeFromPackage(packagee = "io.github.yoanngalentin.app.controller", sourceSetName = "main")
                 .classes()
 
-        "all controllers".config(enabled = false) - {
+        "all controllers".config(enabled = true) - {
             "should have a RestController annotation" {
-                controllerClasses
+                controllerClassesScope
                     .assertTrue {
                         it.hasAnnotationOf(RestController::class)
                     }
             }
 
             "controller should have a QueryCommandController or CommandController suffix" {
-                controllerClasses
+                controllerClassesScope
                     .assertTrue {
                         it.name.endsWith("CommandController") || it.name.endsWith("QueryController")
                     }
             }
         }
 
-        "command".config(enabled = false) - {
+        "command".config(enabled = true) - {
             "CommandController should have only PostMapping, PutMapping and DeleteMapping annotation" {
-                controllerClasses
+                controllerClassesScope
                     .filter {
                         it.name.endsWith("CommandController")
-                    }.assertTrue(testName = this.testCase.name.testName) {
-                        it.hasAllFunctions {
+                    }.assertTrue(testName = this.testCase.name.testName) { classe ->
+                        classe.hasAllFunctions {
                             println(it.name)
                             it.hasAnnotationOf(PostMapping::class, PutMapping::class, DeleteMapping::class)
                         }
@@ -46,9 +46,9 @@ class CqrsKonsistTest :
             }
         }
 
-        "query".config(enabled = false) - {
-            "QueryController should have only PostMapping, PutMapping and DeleteMapping annotation" {
-                controllerClasses
+        "query".config(enabled = true) - {
+            "QueryController should have only GetMapping annotation" {
+                controllerClassesScope
                     .filter {
                         it.name.endsWith("QueryController")
                     }.assertTrue(testName = this.testCase.name.testName) {

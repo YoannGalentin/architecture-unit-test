@@ -19,8 +19,8 @@ class ControllersNeverReturnsCollectionTypesKonsisTest :
                     println("function ${function.name} has return type ${function.returnType}")
                     false
                     // Ne fonctionne pas si on utilise une ResponseEntity et List
-                    // function.hasReturnType { it.isKotlinCollectionType }
-                    // function.hasReturnType { returnType -> listOf("Mono<ResponseEntity<List").any { returnType.hasNameStartingWith(it) } }
+                    // function.hasReturnType { it.sourceDeclaration?.isKotlinCollectionType ?: false }
+                    function.hasReturnType { returnType -> listOf("Mono<ResponseEntity<List").any { returnType.hasNameStartingWith(it) } }
                 }
         }
     })

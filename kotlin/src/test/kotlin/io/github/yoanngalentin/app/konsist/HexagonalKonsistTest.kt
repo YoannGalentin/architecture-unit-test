@@ -12,7 +12,7 @@ class HexagonalKonsistTest :
     FreeSpec({
         val applicationBasePackageName = "io.github.yoanngalentin.app"
 
-        "hexagonal architecture layers have correct dependencies".config(enabled = false) {
+        "hexagonal architecture layers have correct dependencies".config(enabled = true) {
             Konsist
                 .scopeFromProduction()
                 .assertArchitecture {
